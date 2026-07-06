@@ -15,6 +15,18 @@
                     {{ post.body|nl2br }}
                 </div>
             </div>
+
+            {% if authorHandle %}
+                <div class="card mt-3 bg-azure-lt">
+                    <div class="card-body">
+                        <strong>Federated as <code>@{{ authorHandle }}</code></strong>
+                        <div class="text-muted">
+                            Search for this handle from any Mastodon (or other ActivityPub) account and follow it
+                            to receive future posts as ActivityStreams activities.
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

@@ -10,6 +10,7 @@ use App\Event\PostPublishedEvent;
 use App\Form\PostType;
 use App\Repository\PostRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Survos\ActivityPubBundle\Repository\ActivityPubActorRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,6 +24,7 @@ final class PostController extends AbstractController
         private readonly EntityManagerInterface $em,
         private readonly PostRepository $posts,
         private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly ActivityPubActorRepository $actors,
     ) {
     }
 
@@ -35,9 +37,15 @@ final class PostController extends AbstractController
     }
 
     #[Route('/posts/{id}', name: 'app_post_show')]
-    public function show(Post $post): Response
+    public function show(Post $post, Request $request): Response
     {
-        return $this->render('post/show.html.twig', ['post' => $post]);
+        // Lazily created on first publish (see FederatePostListener) — null until then.
+        $actor = $this->actors->findOneBySubject('user', (string) $post->author->getId());
+
+        return $this->render('post/show.html.twig', [
+            'post' => $post,
+            'authorHandle' => $actor ? sprintf('%s@%s', $actor->username, $request->getHost()) : null,
+        ]);
     }
 
     #[Route('/posts/new', name: 'app_post_new', methods: ['GET', 'POST'])]
