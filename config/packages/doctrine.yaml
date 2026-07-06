@@ -6,6 +6,11 @@ doctrine:
         # either here or in the DATABASE_URL env var (see .env file)
         #server_version: '16'
 
+        # Production shares one Postgres instance across apps (per survos-sites
+        # convention) — exclude schemas/tables Doctrine doesn't own so it never
+        # tries to diff/manage them. Same pattern as zm's doctrine.yaml.
+        schema_filter: '~^(?!_timescaledb_)(?!timescaledb_)(?!toolkit_experimental)(?!messenger_messages)~'
+
         profiling_collect_backtrace: '%kernel.debug%'
     orm:
         validate_xml_mapping: true
