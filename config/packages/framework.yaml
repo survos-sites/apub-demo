@@ -1,18 +1,27 @@
 # see https://symfony.com/doc/current/reference/configuration/framework.html
+parameters:
+    # Default for the TRUSTED_PROXIES env var: the dokku/Docker reverse proxy (+
+    # Cloudflare in prod) reaches the app over the private Docker network, so trust
+    # the private ranges. Override TRUSTED_PROXIES if that topology ever changes.
+    default_trusted_proxies: 'private_ranges'
+
 framework:
     secret: '%env(APP_SECRET)%'
+
+    # Without trusting the proxy + forwarded headers, Symfony ignores
+    # X-Forwarded-Proto: https and builds http:// absolute URLs — confirmed: this
+    # exact bug produced an http:// actor href in our WebFinger response that
+    # mastodon.social couldn't resolve (a 404 with nothing to do with domain
+    # blocklists). '127.0.0.1' alone only covered the local tunnel case, not prod's
+    # actual proxy IP — matches zm's working config.
+    trusted_proxies: '%env(default:default_trusted_proxies:TRUSTED_PROXIES)%'
+    trusted_headers: ['x-forwarded-for', 'x-forwarded-host', 'x-forwarded-proto', 'x-forwarded-port']
 
     # Note that the session will be started ONLY if you read or write from it.
     session: true
 
     #esi: true
     #fragments: true
-
-    # Trust the local tunnel (cloudflared/ngrok) so X-Forwarded-Proto is honored —
-    # otherwise absolute URLs (actor IRIs, WebFinger links) come out http:// even
-    # though the public tunnel URL is https://, which ActivityPub implementations reject.
-    trusted_proxies: '127.0.0.1,::1'
-    trusted_headers: ['x-forwarded-for', 'x-forwarded-host', 'x-forwarded-proto', 'x-forwarded-port']
 
     # Needed so absolute URLs generated outside an HTTP request (the Messenger
     # consumer, signing DeliverActivityMessage deliveries) use the public tunnel
