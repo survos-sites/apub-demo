@@ -1,5 +1,6 @@
 {
     "type": "project",
+    "description": "Demo app for survos/activity-pub-bundle — a decoupled ActivityPub federation bundle for Symfony",
     "license": "proprietary",
     "minimum-stability": "stable",
     "prefer-stable": true,
@@ -113,6 +114,7 @@
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^4.3",
         "phpunit/phpunit": "^13.2",
+        "survos/deployment-bundle": "^2.10",
         "symfony/browser-kit": "8.1.*",
         "symfony/css-selector": "8.1.*",
         "symfony/debug-bundle": "8.1.*",

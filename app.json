@@ -1,0 +1,35 @@
+{
+    "name": "apub-demo",
+    "description": "Demo app for survos/activity-pub-bundle — a decoupled ActivityPub federation bundle for Symfony",
+    "keywords": [
+        "php",
+        "symfony",
+        "activitypub"
+    ],
+    "repository": "https://github.com/survos-sites/apub-demo",
+    "scripts": {
+        "dokku": {
+            "predeploy": "bin/console importmap:install && bin/console asset-map:compile && bin/console doctrine:migrations:migrate -n --allow-no-migration",
+            "postdeploy": "bin/console about && bin/console survos:user:create demo@example.com demo1234"
+        }
+    },
+    "env": {
+        "SECRET_TOKEN": {
+            "description": "A secret key for verifying the integrity of signed cookies.",
+            "value": "secret"
+        },
+        "WEB_CONCURRENCY": {
+            "description": "The number of processes to run.",
+            "generator": "echo 5"
+        }
+    },
+    "image": "gliderlabs/herokuish",
+    "addons": [
+        "dokku-postgres"
+    ],
+    "buildpacks": [
+        {
+            "url": "https://github.com/heroku/heroku-buildpack-php.git"
+        }
+    ]
+}

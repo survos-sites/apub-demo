@@ -86,6 +86,9 @@
     "survos/auth-bundle": {
         "version": "2.10.19"
     },
+    "survos/deployment-bundle": {
+        "version": "2.10.19"
+    },
     "survos/field-bundle": {
         "version": "2.10.19"
     },

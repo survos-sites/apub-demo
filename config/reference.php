@@ -1623,6 +1623,9 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     },
  *     clients?: array<string, array<string, mixed>>,
  * }
+ * @psalm-type SurvosDeploymentConfig = array{
+ *     enabled?: bool|Param, // Default: true
+ * }
  * @psalm-type ConfigType = array{
  *     imports?: ImportsConfig,
  *     parameters?: ParametersConfig,
@@ -1668,6 +1671,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         knp_menu?: KnpMenuConfig,
  *         survos_tabler?: SurvosTablerConfig,
  *         knpu_oauth2_client?: KnpuOauth2ClientConfig,
+ *         survos_deployment?: SurvosDeploymentConfig,
  *     },
  *     "when@prod"?: array{
  *         imports?: ImportsConfig,
@@ -1713,6 +1717,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         knp_menu?: KnpMenuConfig,
  *         survos_tabler?: SurvosTablerConfig,
  *         knpu_oauth2_client?: KnpuOauth2ClientConfig,
+ *         survos_deployment?: SurvosDeploymentConfig,
  *     },
  *     ...<string, ExtensionType|array{ // extra keys must follow the when@%env% pattern or match an extension alias
  *         imports?: ImportsConfig,

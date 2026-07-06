@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c047d4b2c797cab8d5c400e954f44502",
+    "content-hash": "4f58b898c9eb4af941b89a54ba7b516c",
     "packages": [
         {
             "name": "composer/semver",
@@ -11620,6 +11620,66 @@
                 }
             ],
             "time": "2024-10-20T05:08:20+00:00"
+        },
+        {
+            "name": "survos/deployment-bundle",
+            "version": "2.10.19",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/survos/deployment-bundle.git",
+                "reference": "c8a7d9e23c860419f3bc542c14ed3fecf12083ed"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/survos/deployment-bundle/zipball/c8a7d9e23c860419f3bc542c14ed3fecf12083ed",
+                "reference": "c8a7d9e23c860419f3bc542c14ed3fecf12083ed",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.5",
+                "symfony/config": "^8.1",
+                "symfony/console": "^8.1",
+                "symfony/dependency-injection": "^8.1",
+                "symfony/form": "^8.1",
+                "symfony/http-kernel": "^8.1",
+                "symfony/process": "^8.1",
+                "twig/twig": "^3.4"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^2.0",
+                "symfony/browser-kit": "^8.1",
+                "symfony/framework-bundle": "^8.1",
+                "symfony/phpunit-bridge": "^8.1",
+                "symfony/twig-bundle": "^8.1",
+                "symfony/var-dumper": "^8.1"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "Survos\\DeploymentBundle\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Tools for deploying Survos projects to dokku",
+            "keywords": [
+                "dev",
+                "symfony",
+                "symfony-ux"
+            ],
+            "support": {
+                "issues": "https://github.com/survos/deployment-bundle/issues",
+                "source": "https://github.com/survos/deployment-bundle/tree/2.10.19"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/kbond",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-06-19T17:47:08+00:00"
         },
         {
             "name": "symfony/browser-kit",
