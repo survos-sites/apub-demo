@@ -36,18 +36,11 @@ final class PostController extends AbstractController
         ]);
     }
 
-    #[Route('/posts/{id}', name: 'app_post_show')]
-    public function show(Post $post, Request $request): Response
-    {
-        // Lazily created on first publish (see FederatePostListener) — null until then.
-        $actor = $this->actors->findOneBySubject('user', (string) $post->author->getId());
-
-        return $this->render('post/show.html.twig', [
-            'post' => $post,
-            'authorHandle' => $actor ? sprintf('%s@%s', $actor->username, $request->getHost()) : null,
-        ]);
-    }
-
+    // Declared before show() — /posts/new is a literal path and must be matched
+    // before the parameterized /posts/{id} gets a chance to swallow it as id="new".
+    // The requirements constraint on show() below is a second line of defense, not
+    // a substitute for this ordering: any future literal path added under /posts/
+    // without thinking about ordering would hit the same trap.
     #[Route('/posts/new', name: 'app_post_new', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_USER')]
     public function new(Request $request): Response
@@ -77,5 +70,17 @@ final class PostController extends AbstractController
         }
 
         return $this->render('post/new.html.twig', ['form' => $form]);
+    }
+
+    #[Route('/posts/{id}', name: 'app_post_show', requirements: ['id' => '[0-9A-HJKMNP-TV-Z]{26}'])]
+    public function show(Post $post, Request $request): Response
+    {
+        // Lazily created on first publish (see FederatePostListener) — null until then.
+        $actor = $this->actors->findOneBySubject('user', (string) $post->author->getId());
+
+        return $this->render('post/show.html.twig', [
+            'post' => $post,
+            'authorHandle' => $actor ? sprintf('%s@%s', $actor->username, $request->getHost()) : null,
+        ]);
     }
 }

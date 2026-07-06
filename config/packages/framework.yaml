@@ -8,6 +8,18 @@ framework:
     #esi: true
     #fragments: true
 
+    # Trust the local tunnel (cloudflared/ngrok) so X-Forwarded-Proto is honored —
+    # otherwise absolute URLs (actor IRIs, WebFinger links) come out http:// even
+    # though the public tunnel URL is https://, which ActivityPub implementations reject.
+    trusted_proxies: '127.0.0.1,::1'
+    trusted_headers: ['x-forwarded-for', 'x-forwarded-host', 'x-forwarded-proto', 'x-forwarded-port']
+
+    # Needed so absolute URLs generated outside an HTTP request (the Messenger
+    # consumer, signing DeliverActivityMessage deliveries) use the public tunnel
+    # host instead of localhost. Set APP_URL in .env.local to the current tunnel URL.
+    router:
+        default_uri: '%env(APP_URL)%'
+
 when@test:
     framework:
         test: true
