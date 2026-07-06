@@ -77,10 +77,18 @@ final class PostController extends AbstractController
     {
         // Lazily created on first publish (see FederatePostListener) — null until then.
         $actor = $this->actors->findOneBySubject('user', (string) $post->author->getId());
+        $authorHandle = $actor ? sprintf('%s@%s', $actor->username, $request->getHost()) : null;
 
         return $this->render('post/show.html.twig', [
             'post' => $post,
-            'authorHandle' => $actor ? sprintf('%s@%s', $actor->username, $request->getHost()) : null,
+            'authorHandle' => $authorHandle,
+            // Mastodon's (and most fediverse software's) "remote follow" web intent —
+            // opens a follow/interact confirmation for a remote acct: URI. Hardcoded to
+            // mastodon.social for this demo; the same authorize_interaction?uri=acct:...
+            // pattern works on any Mastodon-compatible instance.
+            'mastodonFollowUrl' => $authorHandle
+                ? 'https://mastodon.social/authorize_interaction?uri=' . rawurlencode('acct:' . $authorHandle)
+                : null,
         ]);
     }
 }
