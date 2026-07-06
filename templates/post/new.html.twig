@@ -9,6 +9,8 @@
             <div class="card">
                 <div class="card-body">
                     {{ form_start(form) }}
+                        {{ form_row(form.aboutUrl) }}
+                        {{ form_row(form.aboutLabel) }}
                         {{ form_row(form.title) }}
                         {{ form_row(form.body) }}
                         {{ form_row(form.publish, {attr: {class: 'btn btn-primary'}}) }}

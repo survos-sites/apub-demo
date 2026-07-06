@@ -33,6 +33,14 @@ final class Post
 
         #[ORM\Column(type: 'text')]
         public readonly string $body,
+
+        /** URL of the photo/timeline this post is about — federated as a Note attachment. */
+        #[ORM\Column(length: 500, nullable: true)]
+        public readonly ?string $aboutUrl = null,
+
+        /** Human-readable label for aboutUrl (e.g. the photo's title). */
+        #[ORM\Column(length: 255, nullable: true)]
+        public readonly ?string $aboutLabel = null,
     ) {
         $this->id = new Ulid();
         $this->published = new \DateTimeImmutable();

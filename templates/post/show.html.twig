@@ -12,6 +12,13 @@
             </div>
             <div class="card">
                 <div class="card-body">
+                    {% if post.aboutUrl %}
+                        <div class="mb-3">
+                            <a href="{{ post.aboutUrl }}" target="_blank" rel="noopener">
+                                {{ post.aboutLabel ?: post.aboutUrl }}
+                            </a>
+                        </div>
+                    {% endif %}
                     {{ post.body|nl2br }}
                 </div>
             </div>

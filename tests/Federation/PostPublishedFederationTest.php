@@ -43,7 +43,13 @@ final class PostPublishedFederationTest extends KernelTestCase
         $this->em->persist($user);
         $this->em->flush();
 
-        $post = new Post(author: $user, title: 'Hello Fediverse', body: 'First post.');
+        $post = new Post(
+            author: $user,
+            title: 'Hello Fediverse',
+            body: 'Check this out.',
+            aboutUrl: 'https://mus.survos.com/item/123',
+            aboutLabel: 'A cool photo',
+        );
         $this->em->persist($post);
         $this->em->flush();
 
@@ -62,8 +68,11 @@ final class PostPublishedFederationTest extends KernelTestCase
         $rows = $activities->findForActor($actor);
 
         self::assertCount(1, $rows);
-        self::assertSame('Add', $rows[0]->type);
-        self::assertSame('Hello Fediverse', $rows[0]->payload['object']['name']);
+        self::assertSame('Create', $rows[0]->type);
+        self::assertSame('Note', $rows[0]->payload['object']['type']);
+        self::assertStringContainsString('Check this out.', $rows[0]->payload['object']['content']);
+        self::assertStringContainsString('https://mus.survos.com/item/123', $rows[0]->payload['object']['content']);
+        self::assertSame('https://mus.survos.com/item/123', $rows[0]->payload['object']['attachment'][0]['href']);
         self::assertStringContainsString('/posts/' . $post->id, $rows[0]->payload['object']['id']);
     }
 }

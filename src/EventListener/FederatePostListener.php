@@ -27,15 +27,26 @@ final class FederatePostListener
     {
         $post = $event->post;
 
-        $this->activityPub->publishAdd(
+        // Mastodon builds its own link-preview card by parsing <a> tags inside
+        // content — it doesn't render the structured "attachment" field for a plain
+        // link. So the aboutUrl link goes into the HTML body itself; attachmentIri
+        // below is a redundant-but-correct structured hint for consumers that do
+        // look at it.
+        $content = sprintf('<p>%s</p>', nl2br(htmlspecialchars($post->body)));
+        if ($post->aboutUrl !== null) {
+            $label = htmlspecialchars($post->aboutLabel ?? $post->aboutUrl);
+            $content .= sprintf('<p><a href="%s">%s</a></p>', htmlspecialchars($post->aboutUrl), $label);
+        }
+
+        $this->activityPub->publishCreate(
             subjectType: 'user',
             subjectId: (string) $post->author->getId(),
             usernameSeed: $post->author->getEmail(),
             objectIri: $this->urlGenerator->generate('app_post_show', ['id' => $post->id], UrlGeneratorInterface::ABSOLUTE_URL),
-            objectName: $post->title,
+            content: $content,
             published: $post->published,
-            targetIri: $this->urlGenerator->generate('app_homepage', [], UrlGeneratorInterface::ABSOLUTE_URL),
-            targetName: 'Posts',
+            attachmentIri: $post->aboutUrl,
+            attachmentName: $post->aboutLabel,
         );
     }
 }

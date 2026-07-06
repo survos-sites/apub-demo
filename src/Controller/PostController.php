@@ -45,7 +45,7 @@ final class PostController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function new(Request $request): Response
     {
-        $data = ['title' => '', 'body' => ''];
+        $data = ['title' => '', 'body' => '', 'aboutUrl' => '', 'aboutLabel' => ''];
         $form = $this->createForm(PostType::class, $data);
         $form->handleRequest($request);
 
@@ -58,6 +58,8 @@ final class PostController extends AbstractController
                 author: $user,
                 title: $submitted['title'],
                 body: $submitted['body'],
+                aboutUrl: $submitted['aboutUrl'],
+                aboutLabel: $submitted['aboutLabel'] ?: null,
             );
             $this->em->persist($post);
             $this->em->flush();
