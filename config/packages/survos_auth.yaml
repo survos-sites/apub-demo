@@ -1,0 +1,6 @@
+# OAuth providers are intentionally left unconfigured for this demo — classic
+# email/password login (make:security:form-login) is the primary auth path.
+# auth-bundle is required for its `survos:user:create` console command and the
+# UserCreatedEvent hook; add providers here if OAuth login is ever wanted.
+survos_auth:
+    providers: []

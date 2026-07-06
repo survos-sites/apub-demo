@@ -1,0 +1,12 @@
+survos_tabler:
+    routes:
+        home: app_homepage
+        login: app_login
+        logout: app_logout
+        register: app_register
+    app:
+        code: apub-demo
+        title: 'ActivityPub Demo'
+        description: 'Demo app for survos/activity-pub-bundle'
+        abbr: 'apub<b>demo</b>'
+        homepage_route: app_homepage

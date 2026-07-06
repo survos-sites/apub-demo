@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ tabler_identity.title }}{% endblock %}
+
+{% block body %}
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <h2 class="mb-0">Posts</h2>
+                {% if app.user %}
+                    <a href="{{ path('app_post_new') }}" class="btn btn-primary">New post</a>
+                {% endif %}
+            </div>
+
+            {% for post in posts %}
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h3 class="card-title">
+                            <a href="{{ path('app_post_show', {id: post.id}) }}">{{ post.title }}</a>
+                        </h3>
+                        <div class="text-muted mb-2">
+                            by {{ post.author.email }} — {{ post.published|date('Y-m-d H:i') }}
+                        </div>
+                        <p class="card-text">{{ post.body|slice(0, 200) }}{{ post.body|length > 200 ? '…' : '' }}</p>
+                    </div>
+                </div>
+            {% else %}
+                <p class="text-muted">No posts yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

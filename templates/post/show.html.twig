@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block body %}
+    <div class="page-body">
+        <div class="container-xl">
+            <a href="{{ path('app_homepage') }}" class="text-muted">&larr; All posts</a>
+            <h2 class="mt-2">{{ post.title }}</h2>
+            <div class="text-muted mb-3">
+                by {{ post.author.email }} — {{ post.published|date('Y-m-d H:i') }}
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    {{ post.body|nl2br }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
